@@ -5,18 +5,19 @@
  */
 package com.basedatos1.entidades;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,50 +28,56 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@Table(name = "roles", catalog = "Hilos", schema = "Hilos", uniqueConstraints = {@UniqueConstraint(columnNames = {"idrol"})})
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@Table(name = "roles", catalog = "Hilos", schema = "Hilos")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Roles.findAll", query = "SELECT r FROM Roles r")
-    , @NamedQuery(name = "Roles.findByIdrol", query = "SELECT r FROM Roles r WHERE r.idrol = :idrol")
+    , @NamedQuery(name = "Roles.findById", query = "SELECT r FROM Roles r WHERE r.id = :id")
     , @NamedQuery(name = "Roles.findByRol", query = "SELECT r FROM Roles r WHERE r.rol = :rol")})
 public class Roles implements Serializable {
-
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "rol", nullable = false, length = 50)
-    private String rol;
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "idrol", nullable = false)
-    private Integer idrol;
-    @OneToMany(mappedBy = "rolid")
-    @JsonManagedReference
+    @Column(name = "id", nullable = false)
+    private Integer id;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50)
+    @Column(name = "rol", nullable = false, length = 50)
+    private String rol;
+    @OneToMany(mappedBy = "rolid", fetch = FetchType.EAGER)
     private List<Usuario> usuarioList;
 
     public Roles() {
     }
 
-    public Roles(Integer idrol) {
-        this.idrol = idrol;
+    public Roles(Integer id) {
+        this.id = id;
     }
 
-    public Roles(Integer idrol, String rol) {
-        this.idrol = idrol;
+    public Roles(Integer id, String rol) {
+        this.id = id;
         this.rol = rol;
     }
 
-    public Integer getIdrol() {
-        return idrol;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdrol(Integer idrol) {
-        this.idrol = idrol;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
+    }
 
     @XmlTransient
     public List<Usuario> getUsuarioList() {
@@ -84,7 +91,7 @@ public class Roles implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idrol != null ? idrol.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -95,7 +102,7 @@ public class Roles implements Serializable {
             return false;
         }
         Roles other = (Roles) object;
-        if ((this.idrol == null && other.idrol != null) || (this.idrol != null && !this.idrol.equals(other.idrol))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -103,15 +110,7 @@ public class Roles implements Serializable {
 
     @Override
     public String toString() {
-        return "com.basedatos1.entidades.Roles[ idrol=" + idrol + " ]";
-    }
-
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
+        return "com.basedatos1.entidades.Roles[ id=" + id + " ]";
     }
     
 }

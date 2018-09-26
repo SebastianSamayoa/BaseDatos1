@@ -5,17 +5,15 @@
  */
 package com.basedatos1.controladores;
 
-import com.basedatos1.entidades.Usuario;
-import com.basedatos1.repositorios.RepositorioUsuarios;
-import java.util.ArrayList;
+import com.basedatos1.entidades.Persona;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import com.basedatos1.repositorios.RepoPerson;
 
 /**
  *
@@ -23,32 +21,20 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @CrossOrigin
 @RestController
-@RequestMapping("usuario")
+@RequestMapping("persona")
 @EnableJpaRepositories(basePackages = "com.basedatos1.repositorios")
-public class ControladorUsuarios {
+public class ControladorPersona {
 
     @Autowired
-    RepositorioUsuarios usuario;
+    RepoPerson persona;
 
     @RequestMapping(
             value = "/all",
             method = RequestMethod.GET,
             produces = "application/json"
     )
-    public List<Usuario> getall() {
-        List<Usuario> result = (List<Usuario>) usuario.findAll();
-
+    public List<Persona> getall() {
+        List<Persona> result = (List<Persona>) persona.findAll();
         return result;
     }
-
-   @RequestMapping(
-            value = "/crear",
-            method = RequestMethod.POST,
-            consumes = "application/json")
-    public Usuario crear(@RequestBody Usuario user) {
-        Usuario result = usuario.save(user);
-        System.out.println(user);
-        return result;
-    }
-
 }

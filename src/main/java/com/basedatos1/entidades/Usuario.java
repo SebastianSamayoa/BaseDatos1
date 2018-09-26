@@ -5,18 +5,17 @@
  */
 package com.basedatos1.entidades;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,11 +25,11 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "usuario", catalog = "Hilos", schema = "Hilos", uniqueConstraints = {@UniqueConstraint(columnNames = {"idusuario"})})
+@Table(name = "usuario", catalog = "Hilos", schema = "Hilos")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
-    , @NamedQuery(name = "Usuario.findByIdusuario", query = "SELECT u FROM Usuario u WHERE u.idusuario = :idusuario")
+    , @NamedQuery(name = "Usuario.findById", query = "SELECT u FROM Usuario u WHERE u.id = :id")
     , @NamedQuery(name = "Usuario.findByUsuario", query = "SELECT u FROM Usuario u WHERE u.usuario = :usuario")
     , @NamedQuery(name = "Usuario.findByContrasena", query = "SELECT u FROM Usuario u WHERE u.contrasena = :contrasena")})
 public class Usuario implements Serializable {
@@ -39,8 +38,8 @@ public class Usuario implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Column(name = "idusuario", nullable = false)
-    private Integer idusuario;
+    @Column(name = "id", nullable = false)
+    private Integer id;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 25)
@@ -51,34 +50,32 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 25)
     @Column(name = "contrasena", nullable = false, length = 25)
     private String contrasena;
-    @JoinColumn(name = "personaid", referencedColumnName = "idpersona")
-    @ManyToOne
-    @JsonBackReference
+    @JoinColumn(name = "personaid", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private Persona personaid;
-    @JoinColumn(name = "rolid", referencedColumnName = "idrol")
-    @ManyToOne
-    @JsonBackReference
+    @JoinColumn(name = "rolid", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private Roles rolid;
 
     public Usuario() {
     }
 
-    public Usuario(Integer idusuario) {
-        this.idusuario = idusuario;
+    public Usuario(Integer id) {
+        this.id = id;
     }
 
-    public Usuario(Integer idusuario, String usuario, String contrasena) {
-        this.idusuario = idusuario;
+    public Usuario(Integer id, String usuario, String contrasena) {
+        this.id = id;
         this.usuario = usuario;
         this.contrasena = contrasena;
     }
 
-    public Integer getIdusuario() {
-        return idusuario;
+    public Integer getId() {
+        return id;
     }
 
-    public void setIdusuario(Integer idusuario) {
-        this.idusuario = idusuario;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUsuario() {
@@ -116,7 +113,7 @@ public class Usuario implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idusuario != null ? idusuario.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -127,7 +124,7 @@ public class Usuario implements Serializable {
             return false;
         }
         Usuario other = (Usuario) object;
-        if ((this.idusuario == null && other.idusuario != null) || (this.idusuario != null && !this.idusuario.equals(other.idusuario))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -135,7 +132,7 @@ public class Usuario implements Serializable {
 
     @Override
     public String toString() {
-        return "com.basedatos1.entidades.Usuario[ idusuario=" + idusuario + " ]";
+        return "com.basedatos1.entidades.Usuario[ id=" + id + " ]";
     }
     
 }
