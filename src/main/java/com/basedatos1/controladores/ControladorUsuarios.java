@@ -7,7 +7,7 @@ package com.basedatos1.controladores;
 
 
 
-import com.basedatos1.entidades.Usuarios;
+import com.basedatos1.entidades.Usuario;
 import com.basedatos1.repositorios.RepositorioUsuarios;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +38,8 @@ public class ControladorUsuarios {
             method = RequestMethod.GET,
             produces = "application/json"
     )
-    public List<Usuarios> getall(){
-        List<Usuarios> result = (List<Usuarios>) usuario.findAll();
+    public List<Usuario> getall(){
+        List<Usuario> result = (List<Usuario>) usuario.findAll();
         
     return result;
     }

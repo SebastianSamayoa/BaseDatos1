@@ -3,6 +3,9 @@
   <persistence-unit name="com.basedatos1_BaseDatos1_jar_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.basedatos1.entidades.Usuarios</class>
+    <class>com.basedatos1.entidades.Persona</class>
+    <class>com.basedatos1.entidades.Usuario</class>
+    <class>com.basedatos1.entidades.Roles</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://172.17.0.5:1433;databaseName=Hilos"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>

@@ -5,7 +5,7 @@
  */
 package com.basedatos1.repositorios;
 
-import com.basedatos1.entidades.Usuarios;
+import com.basedatos1.entidades.Usuario;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
@@ -13,6 +13,6 @@ import org.springframework.data.repository.query.QueryByExampleExecutor;
  *
  * @author root
  */
-public interface RepositorioUsuarios extends QueryByExampleExecutor<Usuarios>, PagingAndSortingRepository<Usuarios, Integer>{
+public interface RepositorioUsuarios extends QueryByExampleExecutor<Usuario>, PagingAndSortingRepository<Usuario, Integer>{
     
 }
