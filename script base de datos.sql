@@ -22,7 +22,7 @@ GO
 -- Create the table in the specified schema
 CREATE TABLE Hilos.persona
 (
-    id INT NOT NULL PRIMARY KEY, -- primary key column
+    id INT PRIMARY KEY IDENTITY, -- primary key column
     pnombre [NVARCHAR](50) NOT NULL,
     snombre [NVARCHAR](50) NULL,
     papellido [NVARCHAR](50) NOT NULL,
@@ -43,7 +43,7 @@ GO
 -- Create the table in the specified schema
 CREATE TABLE Hilos.roles
 (
-    id INT NOT NULL PRIMARY KEY, -- primary key column
+    id INT PRIMARY KEY IDENTITY, -- primary key column
     rol [NVARCHAR](50) NOT NULL
     -- specify more columns here
 );
@@ -60,7 +60,7 @@ GO
 -- Create the table in the specified schema
 CREATE TABLE Hilos.usuario
 (
-    id INT NOT NULL PRIMARY KEY, -- primary key column
+    id INT PRIMARY KEY IDENTITY, -- primary key column
     personaid INT,
     usuario [NVARCHAR](25) NOT NULL,
     contrasena [NVARCHAR](25) NOT NULL,
@@ -71,13 +71,16 @@ CREATE TABLE Hilos.usuario
 );
 GO
 
-INSERT INTO Hilos.persona values(1,'JHOAN', 'SEBASTIAN', 'SAMAYOA', 'MAYEN', '78472210');
-INSERT INTO Hilos.roles VALUES (1, 'ADMIN');
-INSERT INTO Hilos.roles VALUES (2, 'USER');
-INSERT INTO Hilos.usuario VALUES (1,1, 'jsamayoa', 'jsamayoa',1);
+INSERT INTO Hilos.persona values('JHOAN', 'SEBASTIAN', 'SAMAYOA', 'MAYEN', '78472210');
+INSERT INTO Hilos.roles VALUES ('ADMIN');
+INSERT INTO Hilos.roles VALUES ('USER');
+INSERT INTO Hilos.usuario VALUES (1, 'jsamayoa', 'jsamayoa',1);
+
+use Hilos
+GO
+
 
 SELECT * FROM Hilos.persona;
 SELECT * from Hilos.roles;
-
 select * from Hilos.usuario;
 
