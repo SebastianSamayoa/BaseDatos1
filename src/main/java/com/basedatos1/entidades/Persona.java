@@ -5,7 +5,9 @@
  */
 package com.basedatos1.entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.List;
@@ -18,6 +20,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,7 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-@Table(name = "persona", catalog = "Hilos", schema = "Hilos")
+@Table(name = "persona", catalog = "Hilos", schema = "Hilos",  uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p")
@@ -66,9 +69,7 @@ public class Persona implements Serializable {
     @Size(max = 50)
     @Column(name = "nit", length = 50)
     private String nit;
-    @OneToMany(mappedBy = "personaid", fetch = FetchType.EAGER)
-    private List<Usuario> usuarioList;
-
+    
     public Persona() {
     }
 
@@ -130,14 +131,7 @@ public class Persona implements Serializable {
         this.nit = nit;
     }
 
-    @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
 
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
-    }
 
     @Override
     public int hashCode() {

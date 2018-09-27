@@ -5,6 +5,8 @@
  */
 package com.basedatos1.controladores;
 
+import com.basedatos1.entidades.Persona;
+import com.basedatos1.entidades.Roles;
 import com.basedatos1.entidades.Usuario;
 import com.basedatos1.repositorios.RepositorioUsuarios;
 import java.util.ArrayList;
@@ -45,10 +47,17 @@ public class ControladorUsuarios {
             value = "/crear",
             method = RequestMethod.POST,
             consumes = "application/json")
-    public Usuario crear(@RequestBody Usuario user) {
-        Usuario result = usuario.save(user);
+    public String crear(@RequestBody String user) {
+        //Usuario result = usuario.save(user);
+        
+        Persona per = new Persona(1,"Sebastian", "Samayoa");
+        Roles rol = new Roles(1, "USER");
+        Usuario use = new Usuario(3,"jsebastian","jsebastian");
+        use.setPersonaid(per);
+        use.setRolid(rol);
+        usuario.save(use);
         System.out.println(user);
-        return result;
+       return user;
     }
 
 }

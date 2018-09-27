@@ -5,6 +5,7 @@
  */
 package com.basedatos1.entidades;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,7 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author root
  */
 @Entity
-@Table(name = "usuario", catalog = "Hilos", schema = "Hilos")
+@Table(name = "usuario", catalog = "Hilos", schema = "Hilos",  uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u")
@@ -52,9 +54,11 @@ public class Usuario implements Serializable {
     private String contrasena;
     @JoinColumn(name = "personaid", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
     private Persona personaid;
     @JoinColumn(name = "rolid", referencedColumnName = "id")
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
     private Roles rolid;
 
     public Usuario() {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import com.basedatos1.repositorios.RepoPerson;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  *
@@ -35,6 +36,16 @@ public class ControladorPersona {
     )
     public List<Persona> getall() {
         List<Persona> result = (List<Persona>) persona.findAll();
+        return result;
+    }
+
+    @RequestMapping(
+            value = "/crear",
+            method = RequestMethod.POST,
+            consumes = "application/json"
+    )
+    public Persona crear(@RequestBody Persona person) {
+        Persona result = persona.save(person);
         return result;
     }
 }

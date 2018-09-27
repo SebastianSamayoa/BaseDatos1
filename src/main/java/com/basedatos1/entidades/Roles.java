@@ -6,6 +6,7 @@
 package com.basedatos1.entidades;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,8 +30,8 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author root
  */
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-@Table(name = "roles", catalog = "Hilos", schema = "Hilos")
+//@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@Table(name = "roles", catalog = "Hilos", schema = "Hilos",  uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Roles.findAll", query = "SELECT r FROM Roles r")
@@ -48,9 +50,7 @@ public class Roles implements Serializable {
     @Size(min = 1, max = 50)
     @Column(name = "rol", nullable = false, length = 50)
     private String rol;
-    @OneToMany(mappedBy = "rolid", fetch = FetchType.EAGER)
-    private List<Usuario> usuarioList;
-
+    
     public Roles() {
     }
 
@@ -77,15 +77,6 @@ public class Roles implements Serializable {
 
     public void setRol(String rol) {
         this.rol = rol;
-    }
-
-    @XmlTransient
-    public List<Usuario> getUsuarioList() {
-        return usuarioList;
-    }
-
-    public void setUsuarioList(List<Usuario> usuarioList) {
-        this.usuarioList = usuarioList;
     }
 
     @Override
