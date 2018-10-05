@@ -11,6 +11,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -41,19 +43,19 @@ public class Usuario implements Serializable {
     
     @Id
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "id", nullable = false)
-    private Integer id;
     
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;   
     
     
     @Basic(optional = false)
-    @NotNull
+    //@NotNull
     @Size(min = 1, max = 25)
     @Column(name = "usuario", nullable = false, length = 25)
     private String usuario;
     @Basic(optional = false)
-    @NotNull
+    //@NotNull
     @Size(min = 1, max = 25)
     @Column(name = "contrasena", nullable = false, length = 25)
     private String contrasena;

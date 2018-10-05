@@ -6,6 +6,7 @@
 package com.basedatos1.repositorios;
 
 import com.basedatos1.entidades.Roles;
+import java.util.Optional;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
@@ -14,5 +15,5 @@ import org.springframework.data.repository.query.QueryByExampleExecutor;
  * @author root
  */
 public interface RepositorioRoles extends QueryByExampleExecutor<Roles>, PagingAndSortingRepository<Roles, Integer> {
-    
+    Optional <Roles> findByRol(String rol);
 }

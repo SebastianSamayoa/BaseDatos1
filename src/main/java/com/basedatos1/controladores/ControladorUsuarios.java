@@ -5,12 +5,15 @@
  */
 package com.basedatos1.controladores;
 
+import com.basedatos1.Utilidades.Utilidades;
 import com.basedatos1.entidades.Persona;
 import com.basedatos1.entidades.Roles;
 import com.basedatos1.entidades.Usuario;
+import com.basedatos1.repositorios.RepoPerson;
+import com.basedatos1.repositorios.RepositorioRoles;
 import com.basedatos1.repositorios.RepositorioUsuarios;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -30,7 +33,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ControladorUsuarios {
 
     @Autowired
-    RepositorioUsuarios usuario;
+    RepositorioUsuarios usuarios;
+    @Autowired
+    RepoPerson personas;
+    @Autowired
+    RepositorioRoles roles;
+
+    Utilidades util;
 
     @RequestMapping(
             value = "/all",
@@ -38,26 +47,38 @@ public class ControladorUsuarios {
             produces = "application/json"
     )
     public List<Usuario> getall() {
-        List<Usuario> result = (List<Usuario>) usuario.findAll();
+        List<Usuario> result = (List<Usuario>) usuarios.findAll();
 
         return result;
     }
 
-   @RequestMapping(
+    @RequestMapping(
             value = "/crear",
             method = RequestMethod.POST,
             consumes = "application/json")
-    public String crear(@RequestBody String user) {
-        //Usuario result = usuario.save(user);
-        
-        Persona per = new Persona(1,"Sebastian", "Samayoa");
-        Roles rol = new Roles(1, "USER");
-        Usuario use = new Usuario(3,"jsebastian","jsebastian");
-        use.setPersonaid(per);
-        use.setRolid(rol);
-        usuario.save(use);
-        System.out.println(user);
-       return user;
+    public Object crear(@RequestBody String user) {
+        try {
+            util = new Utilidades();
+            Optional<Persona> Per = personas.findByPnombre((String) util.ObtenerValor(user, "nombre", 2).toString().toUpperCase());
+
+            Optional<Roles> ro = roles.findByRol((String) util.ObtenerValor(user, "rol", 2));
+
+            if (!ro.isPresent()) {
+                return "Rol no Existe por favor Verificar";
+            }
+            if (!Per.isPresent()) {
+                return "Persona No existe por favor Verificar";
+            }
+
+            Usuario us = new Usuario(Per.get().getId(), (String) util.ObtenerValor(user, "usuario", 2), (String) util.ObtenerValor(user, "contrasena", 2));
+            us.setPersonaid(Per.get());
+            us.setRolid(ro.get());
+            usuarios.save(us);
+
+            return us;
+        } catch (Exception e) {
+            return "Verificar Datos Enviados";
+        }
     }
 
 }

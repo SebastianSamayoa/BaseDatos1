@@ -62,7 +62,7 @@ public class Persona implements Serializable {
     @Column(name = "snombre", length = 50)
     private String snombre;
     @Basic(optional = false)
-    @NotNull
+    //@NotNull
     @Size(min = 1, max = 50)
     @Column(name = "papellido", nullable = false, length = 50)
     private String papellido;
