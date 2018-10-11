@@ -46,7 +46,7 @@ public class ControladorUsuarios {
             method = RequestMethod.GET,
             produces = "application/json"
     )
-    public List<Usuario> getall() {
+    public List<Usuario> getUsuarios() {
         List<Usuario> result = (List<Usuario>) usuarios.findAll();
 
         return result;
@@ -56,7 +56,7 @@ public class ControladorUsuarios {
             value = "/crear",
             method = RequestMethod.POST,
             consumes = "application/json")
-    public Object crear(@RequestBody String user) {
+    public Object createUsuarios(@RequestBody String user) {
         try {
             util = new Utilidades();
             Optional<Persona> Per = personas.findByPnombre((String) util.ObtenerValor(user, "nombre", 2).toString().toUpperCase());
@@ -79,6 +79,16 @@ public class ControladorUsuarios {
         } catch (Exception e) {
             return "Verificar Datos Enviados";
         }
+    }
+
+
+    @RequestMapping(
+            value = "session",
+            method = RequestMethod.POST,
+            consumes = "application/json"
+    )
+    public Object sessionUsuarios(@RequestBody String user ){
+        return null;
     }
 
 }
