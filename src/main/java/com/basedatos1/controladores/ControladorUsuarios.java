@@ -89,10 +89,11 @@ public class ControladorUsuarios {
     public Object sessionUsuarios(@RequestBody String user) {
 
         try {
+            util = new Utilidades();
             //String usu = (String) util.ObtenerValor(user, "usuario", 2);
             //System.out.println(usu);
-            //Optional<Usuario> result = usuarios.findByUsuario( (String) util.ObtenerValor(user, "usuario", 2));
-            Optional<Usuario> result = usuarios.findByUsuario("jsamayoa");
+            Optional<Usuario> result = usuarios.findByUsuario( (String) util.ObtenerValor(user, "usuario", 2));
+            //Optional<Usuario> result = usuarios.findByUsuario("jsamayoa");
 
             if (!result.isPresent()) {
                 return false;
