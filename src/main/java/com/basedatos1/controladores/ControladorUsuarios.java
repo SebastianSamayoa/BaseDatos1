@@ -82,27 +82,30 @@ public class ControladorUsuarios {
     }
 
     @RequestMapping(
-            value = "session",
+            value = "/session",
             method = RequestMethod.POST,
             consumes = "application/json"
     )
     public Object sessionUsuarios(@RequestBody String user) {
 
         try {
-            Optional<Usuario> result = usuarios.findByUsuario(util.ObtenerValor(user, "usuario", 2).toString());
+            //String usu = (String) util.ObtenerValor(user, "usuario", 2);
+            //System.out.println(usu);
+            //Optional<Usuario> result = usuarios.findByUsuario( (String) util.ObtenerValor(user, "usuario", 2));
+            Optional<Usuario> result = usuarios.findByUsuario("jsamayoa");
 
             if (!result.isPresent()) {
                 return false;
             }
 
             if (result.get().getUsuario().equals(util.ObtenerValor(user, "usuario", 2).toString())) {
-
+               return true;
             }
 
             return result;
 
         } catch (Exception e) {
-            return e.getMessage();
+            return "Error " + e.getMessage();
         }
     }
 
