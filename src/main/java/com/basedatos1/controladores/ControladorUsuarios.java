@@ -89,18 +89,18 @@ public class ControladorUsuarios {
     public Object sessionUsuarios(@RequestBody String user) {
 
         try {
-                    Optional<Usuario> result = usuarios.findByUsuario(util.ObtenerValor(user, "usuario", 2).toString());
-        
-        if(!result.isPresent()){
-            return false;
-        }
-        
-        if( result.get().getUsuario().equals(util.ObtenerValor(user, "usuario", 2).toString())){
-        
-        }
-        
-        return result;
-        
+            Optional<Usuario> result = usuarios.findByUsuario(util.ObtenerValor(user, "usuario", 2).toString());
+
+            if (!result.isPresent()) {
+                return false;
+            }
+
+            if (result.get().getUsuario().equals(util.ObtenerValor(user, "usuario", 2).toString())) {
+
+            }
+
+            return result;
+
         } catch (Exception e) {
             return e.getMessage();
         }
