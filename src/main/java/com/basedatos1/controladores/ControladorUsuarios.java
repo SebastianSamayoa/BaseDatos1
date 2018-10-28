@@ -90,20 +90,23 @@ public class ControladorUsuarios {
 
         try {
             util = new Utilidades();
-            //String usu = (String) util.ObtenerValor(user, "usuario", 2);
-            //System.out.println(usu);
-            Optional<Usuario> result = usuarios.findByUsuario( (String) util.ObtenerValor(user, "usuario", 2));
-            //Optional<Usuario> result = usuarios.findByUsuario("jsamayoa");
+            Optional<Usuario> result = usuarios.findByUsuario((String) util.ObtenerValor(user, "usuario", 2));
 
             if (!result.isPresent()) {
+                return "Usuario No Existe";
+            }
+
+            String con = result.get().getContrasena();
+            String use = result.get().getUsuario();
+            String con1 = (String) util.ObtenerValor(user, "contrasena", 2);
+            String use1 = (String) util.ObtenerValor(user, "usuario", 2);
+            if (con.equals(con1) && use.equals(use1) ) {
+                return true;
+            }
+            else{
                 return false;
             }
-
-            if (result.get().getUsuario().equals(util.ObtenerValor(user, "usuario", 2).toString())) {
-               return true;
-            }
-
-            return result;
+            
 
         } catch (Exception e) {
             return "Error " + e.getMessage();
