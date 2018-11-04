@@ -12,14 +12,17 @@ import com.basedatos1.entidades.Usuario;
 import com.basedatos1.repositorios.RepoPerson;
 import com.basedatos1.repositorios.RepositorioRoles;
 import com.basedatos1.repositorios.RepositorioUsuarios;
+import org.json.JSONObject;
 import java.util.List;
 import java.util.Optional;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -33,35 +36,34 @@ import org.springframework.web.bind.annotation.RestController;
 public class ControladorUsuarios {
 
     @Autowired
-    RepositorioUsuarios usuarios;
+    RepositorioUsuarios repousuarios;
     @Autowired
-    RepoPerson personas;
+    RepoPerson repopersonas;
     @Autowired
-    RepositorioRoles roles;
+    RepositorioRoles reporoles;
 
     Utilidades util;
 
-    @RequestMapping(
+    @GetMapping(
             value = "/all",
-            method = RequestMethod.GET,
             produces = "application/json"
     )
     public List<Usuario> getUsuarios() {
-        List<Usuario> result = (List<Usuario>) usuarios.findAll();
+        List<Usuario> result = (List<Usuario>) repousuarios.findAll();
 
         return result;
     }
 
-    @RequestMapping(
+    @PostMapping(
             value = "/crear",
-            method = RequestMethod.POST,
             consumes = "application/json")
     public Object createUsuarios(@RequestBody String user) {
         try {
             util = new Utilidades();
-            Optional<Persona> Per = personas.findByPnombre((String) util.ObtenerValor(user, "nombre", 2).toString().toUpperCase());
+            //Optional<Persona> Per = repopersonas.findByPnombre((String) util.ObtenerValor(user, "nombre", 2).toString().toUpperCase());
+            Optional<Persona> Per = repopersonas.findById((Integer) util.ObtenerValor(user, "idpersona", 1));
 
-            Optional<Roles> ro = roles.findByRol((String) util.ObtenerValor(user, "rol", 2));
+            Optional<Roles> ro = reporoles.findByRol((String) util.ObtenerValor(user, "rol", 2));
 
             if (!ro.isPresent()) {
                 return "Rol no Existe por favor Verificar";
@@ -69,11 +71,11 @@ public class ControladorUsuarios {
             if (!Per.isPresent()) {
                 return "Persona No existe por favor Verificar";
             }
-
+                
             Usuario us = new Usuario(Per.get().getId(), (String) util.ObtenerValor(user, "usuario", 2), (String) util.ObtenerValor(user, "contrasena", 2));
             us.setPersonaid(Per.get());
             us.setRolid(ro.get());
-            usuarios.save(us);
+            repousuarios.save(us);
 
             return us;
         } catch (Exception e) {
@@ -81,35 +83,56 @@ public class ControladorUsuarios {
         }
     }
 
-    @RequestMapping(
+    @PostMapping(
             value = "/session",
-            method = RequestMethod.POST,
-            consumes = "application/json"
+            produces = "application/json"
     )
     public Object sessionUsuarios(@RequestBody String user) {
-
+        JSONObject json;
         try {
+
             util = new Utilidades();
-            Optional<Usuario> result = usuarios.findByUsuario((String) util.ObtenerValor(user, "usuario", 2));
+            Optional<Usuario> result = repousuarios.findByUsuario((String) util.ObtenerValor(user, "usuario", 2));
 
             if (!result.isPresent()) {
-                return "Usuario No Existe";
+                json = new JSONObject();
+                json.put("Status", 200);
+                json.put("Respuesta", "Usuario No Existe");
+                return json.toString();
             }
 
             String con = result.get().getContrasena();
             String use = result.get().getUsuario();
             String con1 = (String) util.ObtenerValor(user, "contrasena", 2);
             String use1 = (String) util.ObtenerValor(user, "usuario", 2);
-            if (con.equals(con1) && use.equals(use1) ) {
-                return true;
-            }
-            else{
-                return false;
-            }
-            
 
-        } catch (Exception e) {
-            return "Error " + e.getMessage();
+            if (con.equals(con1) && use.equals(use1)) {
+                Persona per = repopersonas.findByUser(use);
+                JSONObject persona = new JSONObject();
+                persona.put("nombre", per.getPnombre());
+                persona.put("apellido", per.getPapellido());
+                persona.put("nit", per.getNit());
+                persona.put("usuario", result.get().getUsuario());
+                json = new JSONObject();
+//System.out.println(per);
+                json.put("Status", 200);
+                json.put("Respuesta", "Usuario Existe");
+                json.put("Ingresa", con.equals(con1) && use.equals(use1));
+                json.put("Persona", persona);
+                return json.toString();
+            } else {
+                json = new JSONObject();
+                json.put("Status", 200);
+                json.put("Respuesta", "Usuario o Contrasena Inconrrectos");
+                json.put("Ingresa", con.equals(con1) && use.equals(use1));
+                return json.toString();
+            }
+
+        } catch (JSONException e) {
+            json = new JSONObject();
+            json.put("Status", 403);
+            json.put("Error", e.getMessage());
+            return json.toString();
         }
     }
 

@@ -7,7 +7,9 @@ package com.basedatos1.repositorios;
 
 import com.basedatos1.entidades.Persona;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
 /**
@@ -16,4 +18,9 @@ import org.springframework.data.repository.query.QueryByExampleExecutor;
  */
 public interface RepoPerson extends QueryByExampleExecutor<Persona>, PagingAndSortingRepository<Persona, Integer>{
     Optional <Persona> findByPnombre(String pnombre);
+    
+    @Query("SELECT p FROM Persona p\n"
+            + "JOIN Usuario u ON u.personaid = p.id\n"
+            + "WHERE u.usuario = :usuario")
+    Persona findByUser(@Param("usuario") String usuario);
 }
