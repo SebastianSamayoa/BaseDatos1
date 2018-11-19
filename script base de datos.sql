@@ -1,4 +1,4 @@
-CREATE SCHEMA Hilos
+    CREATE SCHEMA Hilos
 GO
 
 USE Hilos
@@ -7,83 +7,88 @@ GO
 IF NOT EXISTS (
     SELECT name
         FROM sys.databases
-        WHERE name = N'Hilos'
+        WHERE name = 'Hilos'
 )
 CREATE DATABASE Hilos
 GO
 
-
 USE Hilos
 GO
+-- para ver las tablas pero hay que seleccionar el schema
+-- SELECT * from sysobjects where type ='U'
 
-IF OBJECT_ID('Hilos.persona', 'U') IS NOT NULL
-DROP TABLE Hilos.persona
-GO
--- Create the table in the specified schema
-CREATE TABLE Hilos.persona
-(
-    id INT PRIMARY KEY IDENTITY, -- primary key column
-    pnombre [NVARCHAR](50) NOT NULL,
-    snombre [NVARCHAR](50) NULL,
-    papellido [NVARCHAR](50) NOT NULL,
-    sapellido [NVARCHAR](50) NULL,
-    nit [NVARCHAR](50) NULL
-    -- specify more columns here
+CREATE TABLE Hilos.PRODUCTO(
+ID INT PRIMARY KEY IDENTITY,
+NOMBREPRODUCTO VARCHAR(25),
+PRECIO MONEY,
+DESCRIPCION VARCHAR(500),
+IDCATEGORIA INT,
+IDPROVEEDOR INT
 );
-GO
 
-use Hilos
-go
-
--- Create a new table called 'roles' in schema 'SchemaName'
--- Drop the table if it already exists
-IF OBJECT_ID('Hilos.roles', 'U') IS NOT NULL
-DROP TABLE Hilos.roles
-GO
--- Create the table in the specified schema
-CREATE TABLE Hilos.roles
-(
-    id INT PRIMARY KEY IDENTITY, -- primary key column
-    rol [NVARCHAR](50) NOT NULL
-    -- specify more columns here
+CREATE TABLE Hilos.CATEGORIA(
+    ID INT PRIMARY KEY IDENTITY,
+    CATEGORIA VARCHAR(100)
 );
-GO
 
-use Hilos
-GO
-
--- Create a new table called 'usuario' in schema 'SchemaName'
--- Drop the table if it already exists
-IF OBJECT_ID('Hilos.usuario', 'U') IS NOT NULL
-DROP TABLE Hilos.usuario
-GO
--- Create the table in the specified schema
-CREATE TABLE Hilos.usuario
-(
-    id INT PRIMARY KEY IDENTITY, -- primary key column
-    personaid INT,
-    usuario [NVARCHAR](25) NOT NULL UNIQUE,
-    contrasena [NVARCHAR](25) NOT NULL,
-    rolid INT,
-    FOREIGN KEY (personaid) REFERENCES Hilos.persona(id),
-    FOREIGN KEY (rolid) REFERENCES Hilos.roles(id)
-    -- specify more columns here
+CREATE TABLE Hilos.PERSONA(
+    ID INT PRIMARY KEY IDENTITY,
+    DPI VARCHAR(25) NOT NULL,
+    PNOMBRE VARCHAR(50) NOT NULL,
+    SNOMBRE VARCHAR(50),
+    TNOMBRE VARCHAR(50),
+    PAPELLIDO VARCHAR(50),
+    SAPELLIDO VARCHAR(50),
+    CAPELLIDO VARCHAR(50),
+    NIT VARCHAR(14),
+    NACIONALIDAD VARCHAR(50),
+    IDTELEFONO INT,
+    IDDIRECCION INT
 );
-GO
-
-INSERT INTO Hilos.persona values('JHOAN', 'SEBASTIAN', 'SAMAYOA', 'MAYEN', '78472210');
-INSERT INTO Hilos.roles VALUES ('ADMIN');
-INSERT INTO Hilos.roles VALUES ('USER');
-INSERT INTO Hilos.usuario VALUES (1, 'jsamayoa', 'jsamayoa',1);
-INSERT INTO Hilos.usuario VALUES (1, 'jsamayoa', 'jsamayoa',2);
-
-use Hilos
-GO
 
 
-SELECT * FROM Hilos.persona;
-SELECT * from Hilos.roles;
-select * from Hilos.usuario;
+CREATE TABLE Hilos.TELEFONO(
+    ID INT PRIMARY KEY IDENTITY,
+    PAIS VARCHAR(5),
+    TELEFONO VARCHAR(15)
+);
 
-SELECT * FROM Hilos.roles where rol = 'ADMIN';
+CREATE TABLE Hilos.DIRECCION(
+    ID INT PRIMARY KEY IDENTITY,
+    CASA VARCHAR(5),
+    CALLE VARCHAR(50),
+    AVENIDA VARCHAR(50),
+    COLONIA VARCHAR(50),
+    PUEBLO VARCHAR(50),
+    DEPARTAMENTO VARCHAR(50),
+    PAIS VARCHAR(50)
+);
 
+CREATE TABLE Hilos.USUARIO(
+    ID INT PRIMARY KEY IDENTITY,
+    USUARIO VARCHAR(50) NOT NULL,
+    IDPERSONA INT,
+    IDROL INT
+);
+
+CREATE TABLE Hilos.PROVEEDOR(
+    ID INT PRIMARY KEY IDENTITY,
+    SOCIEDAD VARCHAR(255),
+    COMERCIAL VARCHAR(255),
+    NIT VARCHAR(14),
+    IDDIRECCION INT,
+    IDTELEFONO INT
+);
+
+CREATE TABLE Hilos.CLIENTE(
+    ID INT PRIMARY KEY IDENTITY,
+    NOMBRES VARCHAR(150),
+    APELLIDOS VARCHAR(150),
+    NIT VARCHAR(14),
+    IDDIRECCION INT
+);
+
+CREATE TABLE ROLES(
+    ID INT PRIMARY KEY IDENTITY,
+    ROL VARCHAR(50),
+);
