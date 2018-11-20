@@ -5,74 +5,83 @@
  */
 package com.basedatos1.entidades;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author root
+ * @author jhoansamayoa
  */
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-@Table(name = "persona", catalog = "Hilos", schema = "Hilos",  uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
+@Table(name = "PERSONA", catalog = "Hilos", schema = "Hilos")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Persona.findAll", query = "SELECT p FROM Persona p")
     , @NamedQuery(name = "Persona.findById", query = "SELECT p FROM Persona p WHERE p.id = :id")
+    , @NamedQuery(name = "Persona.findByDpi", query = "SELECT p FROM Persona p WHERE p.dpi = :dpi")
     , @NamedQuery(name = "Persona.findByPnombre", query = "SELECT p FROM Persona p WHERE p.pnombre = :pnombre")
     , @NamedQuery(name = "Persona.findBySnombre", query = "SELECT p FROM Persona p WHERE p.snombre = :snombre")
+    , @NamedQuery(name = "Persona.findByTnombre", query = "SELECT p FROM Persona p WHERE p.tnombre = :tnombre")
     , @NamedQuery(name = "Persona.findByPapellido", query = "SELECT p FROM Persona p WHERE p.papellido = :papellido")
     , @NamedQuery(name = "Persona.findBySapellido", query = "SELECT p FROM Persona p WHERE p.sapellido = :sapellido")
-    , @NamedQuery(name = "Persona.findByNit", query = "SELECT p FROM Persona p WHERE p.nit = :nit")})
+    , @NamedQuery(name = "Persona.findByCapellido", query = "SELECT p FROM Persona p WHERE p.capellido = :capellido")
+    , @NamedQuery(name = "Persona.findByNit", query = "SELECT p FROM Persona p WHERE p.nit = :nit")
+    , @NamedQuery(name = "Persona.findByNacionalidad", query = "SELECT p FROM Persona p WHERE p.nacionalidad = :nacionalidad")
+    , @NamedQuery(name = "Persona.findByIdtelefono", query = "SELECT p FROM Persona p WHERE p.idtelefono = :idtelefono")
+    , @NamedQuery(name = "Persona.findByIddireccion", query = "SELECT p FROM Persona p WHERE p.iddireccion = :iddireccion")})
 public class Persona implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull
+    @Column(name = "ID", nullable = false)
     private Integer id;
     @Basic(optional = false)
-    //@NotNull
+    @NotNull
+    @Size(min = 1, max = 25)
+    @Column(name = "DPI", nullable = false, length = 25)
+    private String dpi;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "pnombre", nullable = false, length = 50)
+    @Column(name = "PNOMBRE", nullable = false, length = 50)
     private String pnombre;
     @Size(max = 50)
-    @Column(name = "snombre", length = 50)
+    @Column(name = "SNOMBRE", length = 50)
     private String snombre;
-    @Basic(optional = false)
-    //@NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "papellido", nullable = false, length = 50)
+    @Size(max = 50)
+    @Column(name = "TNOMBRE", length = 50)
+    private String tnombre;
+    @Size(max = 50)
+    @Column(name = "PAPELLIDO", length = 50)
     private String papellido;
     @Size(max = 50)
-    @Column(name = "sapellido", length = 50)
+    @Column(name = "SAPELLIDO", length = 50)
     private String sapellido;
     @Size(max = 50)
-    @Column(name = "nit", length = 50)
+    @Column(name = "CAPELLIDO", length = 50)
+    private String capellido;
+    @Size(max = 14)
+    @Column(name = "NIT", length = 14)
     private String nit;
-    
+    @Size(max = 50)
+    @Column(name = "NACIONALIDAD", length = 50)
+    private String nacionalidad;
+    @Column(name = "IDTELEFONO")
+    private Integer idtelefono;
+    @Column(name = "IDDIRECCION")
+    private Integer iddireccion;
+
     public Persona() {
     }
 
@@ -80,10 +89,10 @@ public class Persona implements Serializable {
         this.id = id;
     }
 
-    public Persona(Integer id, String pnombre, String papellido) {
+    public Persona(Integer id, String dpi, String pnombre) {
         this.id = id;
+        this.dpi = dpi;
         this.pnombre = pnombre;
-        this.papellido = papellido;
     }
 
     public Integer getId() {
@@ -92,6 +101,14 @@ public class Persona implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getDpi() {
+        return dpi;
+    }
+
+    public void setDpi(String dpi) {
+        this.dpi = dpi;
     }
 
     public String getPnombre() {
@@ -110,6 +127,14 @@ public class Persona implements Serializable {
         this.snombre = snombre;
     }
 
+    public String getTnombre() {
+        return tnombre;
+    }
+
+    public void setTnombre(String tnombre) {
+        this.tnombre = tnombre;
+    }
+
     public String getPapellido() {
         return papellido;
     }
@@ -126,6 +151,14 @@ public class Persona implements Serializable {
         this.sapellido = sapellido;
     }
 
+    public String getCapellido() {
+        return capellido;
+    }
+
+    public void setCapellido(String capellido) {
+        this.capellido = capellido;
+    }
+
     public String getNit() {
         return nit;
     }
@@ -134,7 +167,29 @@ public class Persona implements Serializable {
         this.nit = nit;
     }
 
+    public String getNacionalidad() {
+        return nacionalidad;
+    }
 
+    public void setNacionalidad(String nacionalidad) {
+        this.nacionalidad = nacionalidad;
+    }
+
+    public Integer getIdtelefono() {
+        return idtelefono;
+    }
+
+    public void setIdtelefono(Integer idtelefono) {
+        this.idtelefono = idtelefono;
+    }
+
+    public Integer getIddireccion() {
+        return iddireccion;
+    }
+
+    public void setIddireccion(Integer iddireccion) {
+        this.iddireccion = iddireccion;
+    }
 
     @Override
     public int hashCode() {

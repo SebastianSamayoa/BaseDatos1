@@ -5,8 +5,6 @@
  */
 package com.basedatos1.entidades;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -15,47 +13,38 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author root
+ * @author jhoansamayoa
  */
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-@Table(name = "roles", catalog = "Hilos", schema = "Hilos",  uniqueConstraints = {@UniqueConstraint(columnNames = {"id"})})
+@Table(name = "CATEGORIA", catalog = "Hilos", schema = "Hilos")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Roles.findAll", query = "SELECT r FROM Roles r")
-    , @NamedQuery(name = "Roles.findById", query = "SELECT r FROM Roles r WHERE r.id = :id")
-    , @NamedQuery(name = "Roles.findByRol", query = "SELECT r FROM Roles r WHERE r.rol = :rol")})
-public class Roles implements Serializable {
+    @NamedQuery(name = "Categoria.findAll", query = "SELECT c FROM Categoria c")
+    , @NamedQuery(name = "Categoria.findById", query = "SELECT c FROM Categoria c WHERE c.id = :id")
+    , @NamedQuery(name = "Categoria.findByCategoria", query = "SELECT c FROM Categoria c WHERE c.categoria = :categoria")})
+public class Categoria implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    
-    @Column(name = "id", nullable = false)
+    @NotNull
+    @Column(name = "ID", nullable = false)
     private Integer id;
-    @Basic(optional = false)
-    //@NotNull
-    @Size(min = 1, max = 50)
-    @Column(name = "rol", nullable = false, length = 50)
-    private String rol;
-    
-    public Roles() {
+    @Size(max = 100)
+    @Column(name = "CATEGORIA", length = 100)
+    private String categoria;
+
+    public Categoria() {
     }
 
-    public Roles(Integer id) {
+    public Categoria(Integer id) {
         this.id = id;
-    }
-
-    public Roles(Integer id, String rol) {
-        this.id = id;
-        this.rol = rol;
     }
 
     public Integer getId() {
@@ -66,12 +55,12 @@ public class Roles implements Serializable {
         this.id = id;
     }
 
-    public String getRol() {
-        return rol;
+    public String getCategoria() {
+        return categoria;
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     @Override
@@ -84,10 +73,10 @@ public class Roles implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Roles)) {
+        if (!(object instanceof Categoria)) {
             return false;
         }
-        Roles other = (Roles) object;
+        Categoria other = (Categoria) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -96,7 +85,7 @@ public class Roles implements Serializable {
 
     @Override
     public String toString() {
-        return "com.basedatos1.entidades.Roles[ id=" + id + " ]";
+        return "com.basedatos1.entidades.Categoria[ id=" + id + " ]";
     }
     
 }

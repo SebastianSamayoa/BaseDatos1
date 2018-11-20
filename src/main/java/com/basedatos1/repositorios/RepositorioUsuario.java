@@ -5,19 +5,13 @@
  */
 package com.basedatos1.repositorios;
 
-
 import com.basedatos1.entidades.Usuario;
-import java.util.Optional;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.QueryByExampleExecutor;
 
 /**
  *
- * @author root
+ * @author jhoansamayoa
  */
-public interface RepositorioUsuarios extends QueryByExampleExecutor<Usuario>, PagingAndSortingRepository<Usuario, Integer> {
-
-    Optional<Usuario> findByUsuario(String usuario);
-
+public interface RepositorioUsuario extends PagingAndSortingRepository<Usuario, Integer>{
     
 }

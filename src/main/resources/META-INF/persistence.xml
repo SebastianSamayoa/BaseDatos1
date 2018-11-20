@@ -6,6 +6,12 @@
     <class>com.basedatos1.entidades.Persona</class>
     <class>com.basedatos1.entidades.Usuario</class>
     <class>com.basedatos1.entidades.Roles</class>
+    <class>com.basedatos1.entidades.Telefono</class>
+    <class>com.basedatos1.entidades.Producto</class>
+    <class>com.basedatos1.entidades.Direccion</class>
+    <class>com.basedatos1.entidades.Cliente</class>
+    <class>com.basedatos1.entidades.Categoria</class>
+    <class>com.basedatos1.entidades.Proveedor</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://172.17.0.5:1433;databaseName=Hilos"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>
