@@ -5,6 +5,7 @@
  */
 package com.basedatos1.controladores;
 
+import com.basedatos1.Utilidades.Utilidades;
 import com.basedatos1.entidades.Persona;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import com.basedatos1.repositorios.RepoPerson;
+import com.basedatos1.repositorios.RepositorioPersona;
+import java.util.Optional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
@@ -27,8 +30,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class ControladorPersona {
 
     @Autowired
-    RepoPerson persona;
+    RepositorioPersona persona;
 
+    Utilidades util;
+    
     @RequestMapping(
             value = "/all",
             method = RequestMethod.GET,
@@ -47,5 +52,14 @@ public class ControladorPersona {
     public Persona crear(@RequestBody Persona person) {
         Persona result = persona.save(person);
         return result;
+    }
+
+    @GetMapping(
+            value = "/buscar",
+            produces = "application/json"
+    )
+    public Optional<Persona> getone(@RequestBody String datos) {
+        util = new Utilidades();
+        return persona.findById((Integer) util.ObtenerValor(datos, "codigo", 1));
     }
 }

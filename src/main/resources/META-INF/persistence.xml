@@ -12,6 +12,8 @@
     <class>com.basedatos1.entidades.Cliente</class>
     <class>com.basedatos1.entidades.Categoria</class>
     <class>com.basedatos1.entidades.Proveedor</class>
+    <class>com.basedatos1.entidades.Detallefactura</class>
+    <class>com.basedatos1.entidades.Factura</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://172.17.0.5:1433;databaseName=Hilos"/>
       <property name="javax.persistence.jdbc.user" value="sa"/>

@@ -9,9 +9,9 @@ import com.basedatos1.Utilidades.Utilidades;
 import com.basedatos1.entidades.Persona;
 import com.basedatos1.entidades.Roles;
 import com.basedatos1.entidades.Usuario;
-import com.basedatos1.repositorios.RepoPerson;
-import com.basedatos1.repositorios.RepositorioRoles;
-import com.basedatos1.repositorios.RepositorioUsuarios;
+import com.basedatos1.repositorios.RepositorioPersona;
+import com.basedatos1.repositorios.RepositorioRol;
+import com.basedatos1.repositorios.RepositorioUsuario;
 import org.json.JSONObject;
 import java.util.List;
 import java.util.Optional;
@@ -36,11 +36,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class ControladorUsuarios {
 
     @Autowired
-    RepositorioUsuarios repousuarios;
+    RepositorioUsuario repousuarios;
     @Autowired
-    RepoPerson repopersonas;
+    RepositorioPersona repopersonas;
     @Autowired
-    RepositorioRoles reporoles;
+    RepositorioRol reporoles;
 
     Utilidades util;
 
@@ -56,83 +56,23 @@ public class ControladorUsuarios {
 
     @PostMapping(
             value = "/crear",
-            consumes = "application/json")
-    public Object createUsuarios(@RequestBody String user) {
-        try {
-            util = new Utilidades();
-            //Optional<Persona> Per = repopersonas.findByPnombre((String) util.ObtenerValor(user, "nombre", 2).toString().toUpperCase());
-            Optional<Persona> Per = repopersonas.findById((Integer) util.ObtenerValor(user, "idpersona", 1));
-
-            Optional<Roles> ro = reporoles.findByRol((String) util.ObtenerValor(user, "rol", 2));
-
-            if (!ro.isPresent()) {
-                return "Rol no Existe por favor Verificar";
-            }
-            if (!Per.isPresent()) {
-                return "Persona No existe por favor Verificar";
-            }
-                
-            Usuario us = new Usuario(Per.get().getId(), (String) util.ObtenerValor(user, "usuario", 2), (String) util.ObtenerValor(user, "contrasena", 2));
-            us.setPersonaid(Per.get());
-            us.setRolid(ro.get());
-            repousuarios.save(us);
-
-            return us;
-        } catch (Exception e) {
-            return "Verificar Datos Enviados";
-        }
-    }
-
-    @PostMapping(
-            value = "/session",
-            produces = "application/json"
+            consumes = "application/json"
     )
-    public Object sessionUsuarios(@RequestBody String user) {
-        JSONObject json;
+    public Object crearUsuario(@RequestBody String Datos) {
+
+        util = new Utilidades();
         try {
-
-            util = new Utilidades();
-            Optional<Usuario> result = repousuarios.findByUsuario((String) util.ObtenerValor(user, "usuario", 2));
-
-            if (!result.isPresent()) {
-                json = new JSONObject();
-                json.put("Status", 200);
-                json.put("Respuesta", "Usuario No Existe");
-                return json.toString();
+            if (!repopersonas.findById((Integer) util.ObtenerValor(Datos, "idpersona", 1)).isPresent() || !reporoles.findById((Integer) util.ObtenerValor(Datos, "idrol", 1)).isPresent()) {
+                return "Persona o Rol no Existe";
             }
-
-            String con = result.get().getContrasena();
-            String use = result.get().getUsuario();
-            String con1 = (String) util.ObtenerValor(user, "contrasena", 2);
-            String use1 = (String) util.ObtenerValor(user, "usuario", 2);
-
-            if (con.equals(con1) && use.equals(use1)) {
-                Persona per = repopersonas.findByUser(use);
-                JSONObject persona = new JSONObject();
-                persona.put("nombre", per.getPnombre());
-                persona.put("apellido", per.getPapellido());
-                persona.put("nit", per.getNit());
-                persona.put("usuario", result.get().getUsuario());
-                json = new JSONObject();
-//System.out.println(per);
-                json.put("Status", 200);
-                json.put("Respuesta", "Usuario Existe");
-                json.put("Ingresa", con.equals(con1) && use.equals(use1));
-                json.put("Persona", persona);
-                return json.toString();
-            } else {
-                json = new JSONObject();
-                json.put("Status", 200);
-                json.put("Respuesta", "Usuario o Contrasena Inconrrectos");
-                json.put("Ingresa", con.equals(con1) && use.equals(use1));
-                return json.toString();
-            }
-
-        } catch (JSONException e) {
-            json = new JSONObject();
-            json.put("Status", 403);
-            json.put("Error", e.getMessage());
-            return json.toString();
+            Usuario user = new Usuario();
+            user.setUsuario((String) util.ObtenerValor(Datos, "usuario", 2));
+            user.setContrasena((String) util.ObtenerValor(Datos, "contrasena", 2));
+            user.setIdpersona((Integer) util.ObtenerValor(Datos, "idpersona", 1));
+            user.setIdrol((Integer) util.ObtenerValor(Datos, "idrol", 1));
+            return repousuarios.save(user);
+        } catch (Exception e) {
+            return e.getMessage();
         }
     }
 
