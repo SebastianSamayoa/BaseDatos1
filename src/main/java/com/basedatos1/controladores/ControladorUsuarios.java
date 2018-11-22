@@ -6,16 +6,12 @@
 package com.basedatos1.controladores;
 
 import com.basedatos1.Utilidades.Utilidades;
-import com.basedatos1.entidades.Persona;
-import com.basedatos1.entidades.Roles;
 import com.basedatos1.entidades.Usuario;
 import com.basedatos1.repositorios.RepositorioPersona;
 import com.basedatos1.repositorios.RepositorioRol;
 import com.basedatos1.repositorios.RepositorioUsuario;
-import org.json.JSONObject;
 import java.util.List;
-import java.util.Optional;
-import org.json.JSONException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -76,4 +72,23 @@ public class ControladorUsuarios {
         }
     }
 
+    @GetMapping(
+            value="/sesion",
+            produces="application/json"
+    )
+    public Object CrearSesion(@RequestBody String Sesion){
+        try {
+            util = new Utilidades();
+            String us = (String) util.ObtenerValor(Sesion, "usuario", 2).toString();
+            System.out.println(repousuarios.findByUsuario(us));
+            if(!repousuarios.findByUsuario(us).isPresent()){
+                return "usuario no existe";
+            }
+            return repousuarios.findByUsuario(us);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return e.getMessage();
+            
+        }
+    }
 }

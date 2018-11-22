@@ -14,6 +14,7 @@ import org.springframework.data.repository.query.QueryByExampleExecutor;
  *
  * @author jhoansamayoa
  */
-public interface RepositorioUsuario extends PagingAndSortingRepository<Usuario, Integer>, QueryByExampleExecutor<Usuario>{
- Optional<Usuario> findByUsuario(String Usuario);   
+public interface RepositorioUsuario extends PagingAndSortingRepository<Usuario, Integer>, QueryByExampleExecutor<Usuario> {
+    
+    Optional<Usuario> findByUsuario(String usuario);
 }
