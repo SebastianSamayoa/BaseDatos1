@@ -5,14 +5,13 @@
  */
 package com.basedatos1.repositorios;
 
-import com.basedatos1.entidades.Proveedor;
+import com.basedatos1.entidades.Factura;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.QueryByExampleExecutor;
 
 /**
  *
  * @author jhoansamayoa
  */
-public interface RepositorioProveedor extends PagingAndSortingRepository<Proveedor, Integer>, QueryByExampleExecutor<Proveedor>{
+public interface RepositorioFactura extends PagingAndSortingRepository<Factura, Integer>{
     
 }

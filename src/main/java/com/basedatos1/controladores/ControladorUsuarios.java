@@ -11,7 +11,7 @@ import com.basedatos1.repositorios.RepositorioPersona;
 import com.basedatos1.repositorios.RepositorioRol;
 import com.basedatos1.repositorios.RepositorioUsuario;
 import java.util.List;
-
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -72,23 +72,32 @@ public class ControladorUsuarios {
         }
     }
 
-    @GetMapping(
+    @PostMapping(
             value="/sesion",
             produces="application/json"
     )
     public Object CrearSesion(@RequestBody String Sesion){
         try {
             util = new Utilidades();
-            String us = (String) util.ObtenerValor(Sesion, "usuario", 2).toString();
-            System.out.println(repousuarios.findByUsuario(us));
-            if(!repousuarios.findByUsuario(us).isPresent()){
+            String user = (String) util.ObtenerValor(Sesion, "usuario", 2).toString();
+            String pass = (String) util.ObtenerValor(Sesion, "contrasena", 2).toString();
+            
+            if(!repousuarios.findByUsuario(user).isPresent()){
                 return "usuario no existe";
+            }else{
+                Optional<Usuario> User = repousuarios.findByUsuario(user);
+                if(User.get().getContrasena().equals(pass) && User.get().getUsuario().equals(user)){
+                    User.get().setContrasena("");
+                    return User;
+                }
             }
-            return repousuarios.findByUsuario(us);
+            return "Datos no Coinciden";
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return e.getMessage();
             
         }
     }
+    
+    
 }

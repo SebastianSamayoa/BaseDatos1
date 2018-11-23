@@ -93,3 +93,23 @@ GO
         ID INT PRIMARY KEY IDENTITY,
         ROL VARCHAR(50),
     );
+
+    CREATE TABLE Hilos.FACTURA(
+        ID INT PRIMARY KEY IDENTITY,
+        IDCLIENTE INT,
+        IDDETALLEFACTURA INT,
+        TOTAL MONEY
+    );
+
+    CREATE TABLE Hilos.DETALLEFACTURA(
+        ID INT PRIMARY KEY IDENTITY,
+        IDPRODUCTO INT,
+        CANTIDAD INT,
+        SUBTOTAL MONEY
+    );
+
+   
+    insert into Hilos.ROLES values('ADMINISTRADOR');
+    INSERT INTO Hilos.ROLES values('OPERADOR');
+
+    
