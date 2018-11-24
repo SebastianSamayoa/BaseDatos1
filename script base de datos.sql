@@ -16,11 +16,11 @@ USE Hilos
 GO
 -- para ver las tablas pero hay que seleccionar el schema
 -- SELECT * from sysobjects where type ='U'
-
     CREATE TABLE Hilos.PRODUCTO(
         ID INT PRIMARY KEY IDENTITY,
         NOMBREPRODUCTO VARCHAR(25),
         PRECIO MONEY,
+        CANTIDAD INT,
         DESCRIPCION VARCHAR(500),
         IDCATEGORIA INT,
         IDPROVEEDOR INT
@@ -112,4 +112,8 @@ GO
     insert into Hilos.ROLES values('ADMINISTRADOR');
     INSERT INTO Hilos.ROLES values('OPERADOR');
 
-    
+    USE Hilos
+    GO
+
+    SELECT * FROM Hilos.PROVEEDOR;
+    SELECT * from Hilos.PRODUCTO;

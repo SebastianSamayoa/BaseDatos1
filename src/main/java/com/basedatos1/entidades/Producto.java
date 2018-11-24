@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Producto.findById", query = "SELECT p FROM Producto p WHERE p.id = :id")
     , @NamedQuery(name = "Producto.findByNombreproducto", query = "SELECT p FROM Producto p WHERE p.nombreproducto = :nombreproducto")
     , @NamedQuery(name = "Producto.findByPrecio", query = "SELECT p FROM Producto p WHERE p.precio = :precio")
+    , @NamedQuery(name = "Producto.findByCantidad", query = "SELECT p FROM Producto p WHERE p.cantidad = :cantidad")
     , @NamedQuery(name = "Producto.findByDescripcion", query = "SELECT p FROM Producto p WHERE p.descripcion = :descripcion")
     , @NamedQuery(name = "Producto.findByIdcategoria", query = "SELECT p FROM Producto p WHERE p.idcategoria = :idcategoria")
     , @NamedQuery(name = "Producto.findByIdproveedor", query = "SELECT p FROM Producto p WHERE p.idproveedor = :idproveedor")})
@@ -48,6 +49,8 @@ public class Producto implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "PRECIO", precision = 19, scale = 4)
     private BigDecimal precio;
+    @Column(name = "CANTIDAD")
+    private Integer cantidad;
     @Size(max = 500)
     @Column(name = "DESCRIPCION", length = 500)
     private String descripcion;
@@ -85,6 +88,14 @@ public class Producto implements Serializable {
 
     public void setPrecio(BigDecimal precio) {
         this.precio = precio;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
+        this.cantidad = cantidad;
     }
 
     public String getDescripcion() {
