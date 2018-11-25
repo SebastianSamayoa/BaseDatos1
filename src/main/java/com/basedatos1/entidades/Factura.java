@@ -6,7 +6,6 @@
 package com.basedatos1.entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,9 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Factura.findAll", query = "SELECT f FROM Factura f")
     , @NamedQuery(name = "Factura.findById", query = "SELECT f FROM Factura f WHERE f.id = :id")
-    , @NamedQuery(name = "Factura.findByIdcliente", query = "SELECT f FROM Factura f WHERE f.idcliente = :idcliente")
-    , @NamedQuery(name = "Factura.findByIddetallefactura", query = "SELECT f FROM Factura f WHERE f.iddetallefactura = :iddetallefactura")
-    , @NamedQuery(name = "Factura.findByTotal", query = "SELECT f FROM Factura f WHERE f.total = :total")})
+    , @NamedQuery(name = "Factura.findByIdcliente", query = "SELECT f FROM Factura f WHERE f.idcliente = :idcliente")})
 public class Factura implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -42,11 +39,6 @@ public class Factura implements Serializable {
     private Integer id;
     @Column(name = "IDCLIENTE")
     private Integer idcliente;
-    @Column(name = "IDDETALLEFACTURA")
-    private Integer iddetallefactura;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "TOTAL", precision = 19, scale = 4)
-    private BigDecimal total;
 
     public Factura() {
     }
@@ -69,22 +61,6 @@ public class Factura implements Serializable {
 
     public void setIdcliente(Integer idcliente) {
         this.idcliente = idcliente;
-    }
-
-    public Integer getIddetallefactura() {
-        return iddetallefactura;
-    }
-
-    public void setIddetallefactura(Integer iddetallefactura) {
-        this.iddetallefactura = iddetallefactura;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
     }
 
     @Override

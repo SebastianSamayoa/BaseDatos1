@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Detallefactura.findAll", query = "SELECT d FROM Detallefactura d")
     , @NamedQuery(name = "Detallefactura.findById", query = "SELECT d FROM Detallefactura d WHERE d.id = :id")
+    , @NamedQuery(name = "Detallefactura.findByIdfactura", query = "SELECT d FROM Detallefactura d WHERE d.idfactura = :idfactura")
     , @NamedQuery(name = "Detallefactura.findByIdproducto", query = "SELECT d FROM Detallefactura d WHERE d.idproducto = :idproducto")
     , @NamedQuery(name = "Detallefactura.findByCantidad", query = "SELECT d FROM Detallefactura d WHERE d.cantidad = :cantidad")
     , @NamedQuery(name = "Detallefactura.findBySubtotal", query = "SELECT d FROM Detallefactura d WHERE d.subtotal = :subtotal")})
@@ -40,6 +41,8 @@ public class Detallefactura implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID", nullable = false)
     private Integer id;
+    @Column(name = "IDFACTURA")
+    private Integer idfactura;
     @Column(name = "IDPRODUCTO")
     private Integer idproducto;
     @Column(name = "CANTIDAD")
@@ -61,6 +64,14 @@ public class Detallefactura implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getIdfactura() {
+        return idfactura;
+    }
+
+    public void setIdfactura(Integer idfactura) {
+        this.idfactura = idfactura;
     }
 
     public Integer getIdproducto() {
